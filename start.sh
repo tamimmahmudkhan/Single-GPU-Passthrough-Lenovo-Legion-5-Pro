@@ -10,6 +10,9 @@ pipewire_pid=$(pgrep -u igneel pipewire-media)
 kill $pulse_pid
 kill $pipewire_pid
 
+killall kwin
+killall plasmashell
+
 ## Uncomment the following line if you use GDM
 #killall gdm-x-session
 
