@@ -1,5 +1,7 @@
 # Single GPU Passthrough on Linux  
-This guide is to help people through the process of using GPU Passthrough via libvirt/virt-manager on Legion 5 Pro in Discrete Graphics Mode. 
+This guide is to help people through the process of using GPU Passthrough via libvirt/virt-manager on Legion 5 Pro in Discrete Graphics Mode. I will try to keep this updated as I do use it for my setup.
+
+However since I do not reinstall or run into issues often changes will be sparse.
 
 ## Special Thanks to:
 ### [The Passthrough post](https://passthroughpo.st)
@@ -119,6 +121,15 @@ pipewire_pid=$(pgrep -u igneel pipewire-media)
 kill $pulse_pid
 kill $pipewire_pid
 
+#Kill KDE processes 
+killall kwin
+killall plasmashell
+
+#Kill running user session to ensure no process using gpu drivers.
+pkill -KILL -u "USERNAME"
+
+sleep 5
+
 ## Uncomment the following line if you use GDM
 #killall gdm-x-session
 
@@ -134,6 +145,7 @@ sleep 2
 
 modprobe -r nvidia-drm
 modprobe -r nvidia-uvm
+modprobe -r nvidia_modeset
 modprobe -r snd_hda_intel
 modprobe -r i2c_nvidia_gpu
 modprobe -r nvidia
@@ -143,11 +155,13 @@ sleep 2
 # Unbind the GPU from display driver
 virsh nodedev-detach pci_0000_01_00_0  #Replace numbers with your specific pci id. Use lspci -nnk
 virsh nodedev-detach pci_0000_01_00_1  # This one too
+# virsh nodedev-detach pci_0000_06_00_4  # This one too
 
 # Load VFIO Kernel Module  
 modprobe vfio-pci  
 modprobe vfio
 modprobe vfio_iommu_type1
+
 ```
 NOTE: Gnome/GDM users. You have to uncommment the line ````killall gdm-x-session```` in order for the script to work properly. Killing GDM does not destroy all users sessions like other display managers do. 
 
