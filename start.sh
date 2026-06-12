@@ -28,6 +28,7 @@ sleep 2
 
 modprobe -r nvidia-drm
 modprobe -r nvidia-uvm
+modprobe -r nvidia_modeset
 modprobe -r snd_hda_intel
 modprobe -r i2c_nvidia_gpu
 modprobe -r nvidia
