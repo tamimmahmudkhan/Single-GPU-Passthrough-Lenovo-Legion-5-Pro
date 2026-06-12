@@ -10,10 +10,12 @@ pipewire_pid=$(pgrep -u igneel pipewire-media)
 kill $pulse_pid
 kill $pipewire_pid
 
+#Kill KDE processes 
 killall kwin
 killall plasmashell
 
-pkill -KILL -u "igneel"
+#Kill running user session to ensure no process using gpu drivers.
+pkill -KILL -u "USERNAME"
 
 sleep 5
 
