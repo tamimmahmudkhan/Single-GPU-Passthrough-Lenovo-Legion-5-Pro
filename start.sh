@@ -13,6 +13,10 @@ kill $pipewire_pid
 killall kwin
 killall plasmashell
 
+pkill -KILL -u "igneel"
+
+sleep 5
+
 ## Uncomment the following line if you use GDM
 #killall gdm-x-session
 
@@ -28,6 +32,7 @@ sleep 2
 
 modprobe -r nvidia-drm
 modprobe -r nvidia-uvm
+modprobe -r nvidia_modeset
 modprobe -r snd_hda_intel
 modprobe -r i2c_nvidia_gpu
 modprobe -r nvidia
@@ -37,6 +42,7 @@ sleep 2
 # Unbind the GPU from display driver
 virsh nodedev-detach pci_0000_01_00_0  #Replace numbers with your specific pci id. Use lspci -nnk
 virsh nodedev-detach pci_0000_01_00_1  # This one too
+# virsh nodedev-detach pci_0000_06_00_4  # This one too
 
 # Load VFIO Kernel Module  
 modprobe vfio-pci  
